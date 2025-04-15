@@ -1,0 +1,153 @@
+global_config:
+  seed: 5959
+  device: "cuda"
+  index: 0
+  gpu_ids: [0, 1]
+  is_mp: False
+
+data_config:
+  data_path: "./data/" # "./data/" 
+  dataset_name: "MNIST" # MNIST, CIFAR10, CIFAR100, EMNIST
+  params: None
+  num_shards: 500
+  iid: False
+  lbl_fraction: 0.01
+
+cent_config:
+  num_clusters: 10
+  epochs: 100
+  batch_size: 64
+
+fed_config:
+  fraction: 0.5 # C: 0.1
+  num_clients: 100 # K: 100
+  num_rounds: 100 # R: 500
+  batch_size: 64 # 10
+  
+client_config:
+  num_clusters: 10
+  local_epochs: 1 # E: 10
+  batch_size: 16 # B: 10
+  criterion: torch.nn.CrossEntropyLoss # torch.nn.CrossEntropyLoss
+  criterion_config:
+    reduction: 'none'
+    beta: 2
+  optimizer: torch.optim.SGD # torch.optim.SGD
+  optim_config:
+    lr: 0.01 # 0.01
+    momentum: 0.9
+  dataset_name: None
+    
+init_config:
+  init_type: "xavier"
+  init_gain: 1.0
+  gpu_ids: [0, 0]
+
+model_config: 
+  name: TwoNN
+  in_features: 784
+  num_hiddens: 200
+  num_classes: 10
+  
+  #name: CNN
+  #in_channels: 1
+  #hidden_channels: 32
+  #num_hiddens: 512
+  #num_classes: 10
+
+  #name: CNN2
+  #in_channels: 3
+  #hidden_channels: 32
+  #num_hiddens: 512
+  #num_classes: 10
+
+  #name: CNN2
+  #in_channels: 3
+  #hidden_channels: 32
+  #num_hiddens: 512
+  #num_classes: 100
+
+  #name: CNN #EMNIST
+  #in_channels: 1
+  #hidden_channels: 32
+  #num_hiddens: 512
+  #num_classes: 47
+
+log_config:
+  log_path: "./logs/"
+  log_name:  "FL.log"
+  tb_port: 5252
+  tb_host: "0.0.0.0"
+checkpoint_config:
+  ckpt_save_freq: 2
+  ckpt_path: "./checkpoints/"
+
+models:
+  TwoNN:
+    name: TwoNN
+    in_features: 784
+    num_hiddens: 200
+    num_classes: 10
+  TwoNN_D:
+    name: TwoNN_D
+    in_features: 784
+    num_hiddens: 200
+    num_classes: 10
+  CNN: 
+    name: CNN
+    in_channels: 1
+    hidden_channels: 32
+    num_hiddens: 512
+    num_classes: 10
+  CNN2:
+    name: CNN2
+    in_channels: 3
+    hidden_channels: 32
+    num_hiddens: 512
+    num_classes: 10
+  ResNet9:
+    name: ResNet9
+    output_dim: 10
+
+datasets:
+  MNIST:
+    name: "MNIST"
+    params:
+      root: "./data/"
+      train: True
+      download: True
+      transform: None
+  EMNIST:
+    name: "EMNIST"
+    params:
+      root: "./data/"
+      train: True
+      split: "balanced" # byclass: 62, bymerge: 47, balanced: 47, letters: 26, digits: 10 and mnist: 10
+      download: True
+      transform: None
+  FashionMNIST:
+    name: "FashionMNIST"
+    params: 
+      root: "./data/"
+      train: True
+      download: True
+      transform: None
+  CIFAR10:
+    name: "CIFAR10"
+    params:
+      root: "./data/"
+      train: True
+      download: True
+      transform: None
+  CIFAR100:
+    name: "CIFAR100"
+    params:
+      root: "./data/"
+      train: True
+      download: True
+      transform: None
+  BelgiumTSC:
+    name: "BelgiumTSC"
+    params:
+      root: "./data/"
+
